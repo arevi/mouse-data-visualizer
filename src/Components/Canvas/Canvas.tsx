@@ -225,7 +225,7 @@ const Canvas = (): JSX.Element => {
 
       <canvas id="canvas" ref={canvasRef} height={getWindowHeight()} width={getWindowWidth()} />
       <p id="credits">
-        Made with <span className="red">❤</span> by
+        Made with <span className="red">❤</span> by{' '}
         <a href="https://github.com/Arevi" className="red">
           Arevi
         </a>

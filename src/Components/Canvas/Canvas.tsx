@@ -14,11 +14,12 @@ const Canvas = (): JSX.Element => {
     endY: Math.ceil(Math.random() * getWindowHeight()),
     gravity: Math.ceil(Math.random() * 10),
     wind: Math.ceil(Math.random() * 10),
-    minWait: 2,
+    minWait: 1,
     maxWait: Math.ceil(Math.random() * 5),
     maxStep: Math.ceil(Math.random() * 3),
     targetArea: Math.ceil(Math.random() * 10),
   });
+  const [windMouse, setWindMouse] = React.useState<WindMouse>(new WindMouse(Math.ceil(Math.random() * 10)));
 
   React.useEffect(() => {
     if (canvasRef.current) {
@@ -31,14 +32,18 @@ const Canvas = (): JSX.Element => {
     }
   }, [context]);
 
+  React.useEffect(() => {
+    drawMouseMovement();
+  }, [settings]);
+
   const drawMouseMovement = async () => {
     if (!context) return;
 
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
-    const windMouse = new WindMouse(Math.ceil(Math.random() * 10));
-
+    setWindMouse(new WindMouse(Math.ceil(Math.random() * 10)));
     const points = await windMouse.GeneratePoints(settings);
+
     context.beginPath();
     context.lineCap = 'round';
     context.strokeStyle = '#ffffff';
@@ -55,7 +60,6 @@ const Canvas = (): JSX.Element => {
           context.fillText(`(${x}, ${y})`, x + 10, y + 10);
         }
       }, time);
-      context.closePath();
     });
   };
 
@@ -72,10 +76,12 @@ const Canvas = (): JSX.Element => {
               type="number"
               className="mouse-data-input"
               defaultValue={settings.startX}
+              max={getWindowWidth() - 10}
+              min={10}
               onChange={(e) =>
                 setSettings({
                   ...settings,
-                  startX: Number(e.target.value) < getWindowWidth() ? Number(e.target.value) : getWindowWidth(),
+                  startX: Number(e.target.value) <= getWindowWidth() ? Number(e.target.value) : getWindowWidth() - 10,
                 })
               }
             />
@@ -89,10 +95,12 @@ const Canvas = (): JSX.Element => {
               type="number"
               className="mouse-data-input"
               defaultValue={settings.startY}
+              max={getWindowHeight() - 10}
+              min={10}
               onChange={(e) =>
                 setSettings({
                   ...settings,
-                  startY: Number(e.target.value) < getWindowHeight() ? Number(e.target.value) : getWindowHeight(),
+                  startY: Number(e.target.value) <= getWindowHeight() ? Number(e.target.value) : getWindowHeight() - 10,
                 })
               }
             />
@@ -108,10 +116,12 @@ const Canvas = (): JSX.Element => {
               type="number"
               className="mouse-data-input"
               defaultValue={settings.endX}
+              max={getWindowWidth() - 10}
+              min={10}
               onChange={(e) =>
                 setSettings({
                   ...settings,
-                  endX: Number(e.target.value) < getWindowWidth() ? Number(e.target.value) : getWindowWidth(),
+                  endX: Number(e.target.value) <= getWindowWidth() ? Number(e.target.value) : getWindowWidth() - 10,
                 })
               }
             />
@@ -125,10 +135,12 @@ const Canvas = (): JSX.Element => {
               type="number"
               className="mouse-data-input"
               defaultValue={settings.endY}
+              max={getWindowHeight() - 10}
+              min={10}
               onChange={(e) =>
                 setSettings({
                   ...settings,
-                  endY: Number(e.target.value) < getWindowHeight() ? Number(e.target.value) : getWindowHeight(),
+                  endY: Number(e.target.value) <= getWindowHeight() ? Number(e.target.value) : getWindowHeight() - 10,
                 })
               }
             />

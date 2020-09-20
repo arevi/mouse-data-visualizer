@@ -1,25 +1,33 @@
 import * as React from 'react';
-import WindMouse from 'windmouse';
+import { useForm } from 'react-hook-form';
 import { MouseSettings } from 'windmouse/lib/Types';
 import { getWindowWidth, getWindowHeight } from '../../util/Browser';
+import { yupResolver } from '@hookform/resolvers';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay, faSync } from '@fortawesome/free-solid-svg-icons';
+import WindMouse from 'windmouse';
+import * as yup from 'yup';
 import './Canvas.css';
+
+const schema = yup.object().shape({
+  startX: yup.number().required(),
+  startY: yup.number().required(),
+  endX: yup.number().required(),
+  endY: yup.number().required(),
+  gravity: yup.number().required(),
+  wind: yup.number().required(),
+  minWait: yup.number().required(),
+  maxWait: yup.number().required(),
+  maxStep: yup.number().required(),
+  targetArea: yup.number().required(),
+});
 
 const Canvas = (): JSX.Element => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [context, setContext] = React.useState<CanvasRenderingContext2D | null>(null);
-  const [settings, setSettings] = React.useState<MouseSettings>({
-    startX: Math.ceil(Math.random() * getWindowWidth()),
-    startY: Math.ceil(Math.random() * getWindowHeight()),
-    endX: Math.ceil(Math.random() * getWindowWidth()),
-    endY: Math.ceil(Math.random() * getWindowHeight()),
-    gravity: Math.ceil(Math.random() * 10),
-    wind: Math.ceil(Math.random() * 10),
-    minWait: 1,
-    maxWait: Math.ceil(Math.random() * 5),
-    maxStep: Math.ceil(Math.random() * 3),
-    targetArea: Math.ceil(Math.random() * 10),
+  const { register, handleSubmit, setValue } = useForm<MouseSettings>({
+    resolver: yupResolver(schema),
   });
-  const [windMouse, setWindMouse] = React.useState<WindMouse>(new WindMouse(Math.ceil(Math.random() * 10)));
 
   React.useEffect(() => {
     if (canvasRef.current) {
@@ -27,22 +35,20 @@ const Canvas = (): JSX.Element => {
 
       if (renderCtx) {
         setContext(renderCtx);
-        drawMouseMovement();
+        randomizeValues();
       }
     }
-  }, [context]);
+  }, []);
 
-  React.useEffect(() => {
-    drawMouseMovement();
-  }, [settings]);
+  const onSubmit = async (values: MouseSettings) => {
+    let points = await generatePoints(values);
+    await drawCanvas(points);
+  };
 
-  const drawMouseMovement = async () => {
-    if (!context) return;
+  const drawCanvas = (points: number[][]): Promise<void> => {
+    if (!context) return Promise.reject();
 
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-
-    setWindMouse(new WindMouse(Math.ceil(Math.random() * 10)));
-    const points = await windMouse.GeneratePoints(settings);
 
     context.beginPath();
     context.lineCap = 'round';
@@ -61,49 +67,44 @@ const Canvas = (): JSX.Element => {
         }
       }, time);
     });
+
+    return Promise.resolve();
+  };
+
+  const generatePoints = async (settings: MouseSettings): Promise<number[][]> => {
+    const windMouse: WindMouse = new WindMouse(Math.ceil(Math.random() * 10));
+    const points: number[][] = await windMouse.GeneratePoints({ ...settings });
+    return Promise.resolve(points);
+  };
+
+  const randomizeValues = () => {
+    setValue('startX', Math.ceil(Math.random() * getWindowWidth()));
+    setValue('startY', Math.ceil(Math.random() * getWindowHeight()));
+    setValue('endX', Math.ceil(Math.random() * getWindowWidth()));
+    setValue('endY', Math.ceil(Math.random() * getWindowHeight()));
+    setValue('gravity', Math.ceil(Math.random() * 10));
+    setValue('wind', Math.ceil(Math.random() * 10));
+    setValue('minWait', 1);
+    setValue('maxWait', Math.ceil(Math.random() * 5));
+    setValue('maxStep', Math.ceil(Math.random() * 3));
+    setValue('targetArea', Math.ceil(Math.random() * 10));
   };
 
   return (
     <React.Fragment>
-      <div id="mouse-data">
+      <form id="mouse-data" onSubmit={handleSubmit(onSubmit)}>
         <div className="mouse-data-row">
           <div className="mouse-data-field">
             <label htmlFor="startX" className="mouse-data-label">
               Start X
             </label>
-            <input
-              name="startX"
-              type="number"
-              className="mouse-data-input"
-              defaultValue={settings.startX}
-              max={getWindowWidth() - 10}
-              min={10}
-              onChange={(e) =>
-                setSettings({
-                  ...settings,
-                  startX: Number(e.target.value) <= getWindowWidth() ? Number(e.target.value) : getWindowWidth() - 10,
-                })
-              }
-            />
+            <input name="startX" type="number" className="mouse-data-input" step={0.1} ref={register({})} />
           </div>
           <div className="mouse-data-field">
             <label htmlFor="startY" className="mouse-data-label">
               Start Y
             </label>
-            <input
-              name="startY"
-              type="number"
-              className="mouse-data-input"
-              defaultValue={settings.startY}
-              max={getWindowHeight() - 10}
-              min={10}
-              onChange={(e) =>
-                setSettings({
-                  ...settings,
-                  startY: Number(e.target.value) <= getWindowHeight() ? Number(e.target.value) : getWindowHeight() - 10,
-                })
-              }
-            />
+            <input name="startY" type="number" className="mouse-data-input" step={0.1} ref={register} />
           </div>
         </div>
         <div className="mouse-data-row">
@@ -111,39 +112,13 @@ const Canvas = (): JSX.Element => {
             <label htmlFor="endX" className="mouse-data-label">
               End X
             </label>
-            <input
-              name="endX"
-              type="number"
-              className="mouse-data-input"
-              defaultValue={settings.endX}
-              max={getWindowWidth() - 10}
-              min={10}
-              onChange={(e) =>
-                setSettings({
-                  ...settings,
-                  endX: Number(e.target.value) <= getWindowWidth() ? Number(e.target.value) : getWindowWidth() - 10,
-                })
-              }
-            />
+            <input name="endX" type="number" className="mouse-data-input" step={0.1} ref={register} />
           </div>
           <div className="mouse-data-field">
             <label htmlFor="endY" className="mouse-data-label">
               End Y
             </label>
-            <input
-              name="endY"
-              type="number"
-              className="mouse-data-input"
-              defaultValue={settings.endY}
-              max={getWindowHeight() - 10}
-              min={10}
-              onChange={(e) =>
-                setSettings({
-                  ...settings,
-                  endY: Number(e.target.value) <= getWindowHeight() ? Number(e.target.value) : getWindowHeight() - 10,
-                })
-              }
-            />
+            <input name="endY" type="number" className="mouse-data-input" step={0.1} ref={register} />
           </div>
         </div>
 
@@ -152,25 +127,13 @@ const Canvas = (): JSX.Element => {
             <label htmlFor="gravity" className="mouse-data-label">
               Gravity
             </label>
-            <input
-              name="gravity"
-              type="number"
-              className="mouse-data-input"
-              defaultValue={settings.gravity}
-              onChange={(e) => setSettings({ ...settings, gravity: Number(e.target.value) })}
-            />
+            <input name="gravity" type="number" className="mouse-data-input" step={0.1} ref={register} />
           </div>
           <div className="mouse-data-field">
             <label htmlFor="wind" className="mouse-data-label">
               Wind
             </label>
-            <input
-              name="wind"
-              type="number"
-              className="mouse-data-input"
-              defaultValue={settings.wind}
-              onChange={(e) => setSettings({ ...settings, wind: Number(e.target.value) })}
-            />
+            <input name="wind" type="number" className="mouse-data-input" step={0.1} ref={register} />
           </div>
         </div>
 
@@ -179,26 +142,14 @@ const Canvas = (): JSX.Element => {
             <label htmlFor="minWait" className="mouse-data-label">
               Min Wait
             </label>
-            <input
-              name="minWait"
-              type="number"
-              className="mouse-data-input"
-              defaultValue={settings.minWait}
-              onChange={(e) => setSettings({ ...settings, minWait: Number(e.target.value) })}
-            />
+            <input name="minWait" type="number" className="mouse-data-input" step={0.1} ref={register} />
           </div>
 
           <div className="mouse-data-field">
             <label htmlFor="maxWait" className="mouse-data-label">
               Max Wait
             </label>
-            <input
-              name="maxWait"
-              type="number"
-              className="mouse-data-input"
-              defaultValue={settings.maxWait}
-              onChange={(e) => setSettings({ ...settings, maxWait: Number(e.target.value) })}
-            />
+            <input name="maxWait" type="number" className="mouse-data-input" step={0.1} ref={register} />
           </div>
         </div>
 
@@ -207,33 +158,24 @@ const Canvas = (): JSX.Element => {
             <label htmlFor="maxStep" className="mouse-data-label">
               Max Step
             </label>
-            <input
-              name="maxStep"
-              type="number"
-              className="mouse-data-input"
-              defaultValue={settings.maxStep}
-              onChange={(e) => setSettings({ ...settings, maxStep: Number(e.target.value) })}
-            />
+            <input name="maxStep" type="number" className="mouse-data-input" step={0.1} ref={register} />
           </div>
           <div className="mouse-data-field">
             <label htmlFor="targetArea" className="mouse-data-label">
               Target Area
             </label>
-            <input
-              name="targetArea"
-              type="number"
-              className="mouse-data-input"
-              defaultValue={settings.targetArea}
-              onChange={(e) => setSettings({ ...settings, targetArea: Number(e.target.value) })}
-            />
+            <input name="targetArea" type="number" className="mouse-data-input" step={0.1} ref={register} />
           </div>
         </div>
         <div className="mouse-data-row">
-          <button className="btn start-btn" onClick={() => drawMouseMovement()}>
-            Play
+          <button className="btn start-btn" type="submit">
+            <FontAwesomeIcon icon={faPlay} />
+          </button>
+          <button className="btn start-btn" type="submit" onClick={randomizeValues}>
+            <FontAwesomeIcon icon={faSync} />
           </button>
         </div>
-      </div>
+      </form>
 
       <canvas id="canvas" ref={canvasRef} height={getWindowHeight()} width={getWindowWidth()} />
       <p id="credits">

@@ -3,4 +3,9 @@ import { render } from 'react-dom';
 import App from './Components/App';
 import './index.css';
 
-render(<App />, document.getElementById('root'));
+render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);

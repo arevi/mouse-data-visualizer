@@ -51,9 +51,9 @@ canvas {
   margin: 0;
 }
 
-.start-btn {
+.btn {
   margin-top: 0.6rem;
-  width: 100%;
+  width: 6.4rem;
   height: 2.2rem;
   background-color: rgba(12, 12, 12, 0.4);
   border: 1px solid #525252;
@@ -63,12 +63,16 @@ canvas {
   font-weight: bold;
 }
 
-.start-btn:hover {
+.btn:hover {
   cursor: pointer;
   background-color: rgba(12, 12, 12, 1);
   border: 1px solid #424242;
   color: #747474;
   transition: all 0.2s ease-in;
+}
+
+.btn:not(:first-of-type) {
+  margin-left: 1rem;
 }
 
 #credits {

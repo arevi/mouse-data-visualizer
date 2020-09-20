@@ -29,9 +29,15 @@
   "author": "Armin Dizdarevic",
   "license": "MIT",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.30",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.11",
+    "@hookform/resolvers": "^0.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "windmouse": "^1.0.3"
+    "react-hook-form": "^6.8.3",
+    "windmouse": "^1.0.3",
+    "yup": "^0.29.3"
   },
   "devDependencies": {
     "@types/html-webpack-plugin": "^3.2.3",
@@ -41,12 +47,13 @@
     "@types/react-dom": "^16.9.8",
     "@types/webpack": "^4.41.22",
     "@types/webpack-dev-server": "^3.11.0",
+    "@types/yup": "^0.29.7",
     "css-loader": "^4.3.0",
     "html-webpack-plugin": "^4.4.1",
     "jest": "^26.4.2",
     "prettier": "^2.1.2",
     "style-loader": "^1.2.1",
-    "ts-jest": "^26.3.0",
+    "ts-jest": "^26.4.0",
     "ts-loader": "^8.0.4",
     "ts-node": "^9.0.0",
     "tslint": "^6.1.3",

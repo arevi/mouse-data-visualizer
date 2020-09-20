@@ -1,0 +1,90 @@
+canvas {
+  height: 100%;
+  width: 100%;
+  border: 1px solid #525252;
+}
+
+#mouse-data {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: rgba(12, 12, 12, 0.4);
+  padding: 1rem;
+}
+
+.mouse-data-row {
+  display: flex;
+  flex-flow: row;
+}
+
+.mouse-data-row:not(:first-of-type) {
+  margin-top: 0.6rem;
+}
+
+.mouse-data-field:nth-of-type(even) {
+  margin-left: 1rem;
+}
+
+.mouse-data-field {
+  display: flex;
+  flex-flow: column;
+  width: 6.4rem;
+}
+
+.mouse-data-label {
+  color: #525252;
+  font-size: 1.2rem;
+}
+
+.mouse-data-input {
+  outline: none;
+  background-color: rgba(12, 12, 12, 0.4);
+  padding: 0.4rem;
+  border: 1px solid #525252;
+  border-radius: 0.2rem;
+  color: #747474;
+}
+
+.mouse-data-input::-webkit-outer-spin-button,
+.mouse-data-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.start-btn {
+  margin-top: 0.6rem;
+  width: 100%;
+  height: 2.2rem;
+  background-color: rgba(12, 12, 12, 0.4);
+  border: 1px solid #525252;
+  border-radius: 0.2rem;
+  outline: none;
+  color: #747474;
+  font-weight: bold;
+}
+
+.start-btn:hover {
+  cursor: pointer;
+  background-color: rgba(12, 12, 12, 1);
+  border: 1px solid #424242;
+  color: #747474;
+  transition: all 0.2s ease-in;
+}
+
+#credits {
+  position: absolute;
+  bottom: 0.4rem;
+  left: 0.4rem;
+  color: white;
+  font-size: 1rem;
+  font-weight: bolder;
+}
+
+a {
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.red {
+  color: red;
+}

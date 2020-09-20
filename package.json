@@ -1,0 +1,60 @@
+{
+  "name": "mouse-data-visualizer",
+  "version": "1.0.0",
+  "description": "A visual playground for the WindMouse JavaScript library. Edit settings in real time and fine tune your mouse movements.",
+  "main": "src/index.tsx",
+  "scripts": {
+    "dev:webpack": "webpack --mode development",
+    "dev:react": "webpack-dev-server --mode development --port 3000",
+    "prod:webpack": "webpack --mode production",
+    "format": "prettier --write \"src/**/*.tsx\"",
+    "lint": "tslint -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "directory": "https://github.com/arevi/mouse-data-visualizer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arevi/mouse-data-visualizer/issues"
+  },
+  "keywords": [
+    "windmouse",
+    "mouse movement",
+    "visualizer",
+    "javascript",
+    "typescript",
+    "react"
+  ],
+  "homepage": "https://github.com/arevi/mouse-data-visualizer",
+  "author": "Armin Dizdarevic",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "windmouse": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/html-webpack-plugin": "^3.2.3",
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.1",
+    "@types/react": "^16.9.49",
+    "@types/react-dom": "^16.9.8",
+    "@types/webpack": "^4.41.22",
+    "@types/webpack-dev-server": "^3.11.0",
+    "css-loader": "^4.3.0",
+    "html-webpack-plugin": "^4.4.1",
+    "jest": "^26.4.2",
+    "prettier": "^2.1.2",
+    "style-loader": "^1.2.1",
+    "ts-jest": "^26.3.0",
+    "ts-loader": "^8.0.4",
+    "ts-node": "^9.0.0",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^5.0.0",
+    "typescript": "^4.0.3",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
+}

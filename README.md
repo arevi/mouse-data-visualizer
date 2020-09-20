@@ -1,4 +1,4 @@
-# mouse-data-visualizer
+# Mouse Data Visualizer
 
 A visual playground for the WindMouse JavaScript library. Edit settings in real time and fine tune your mouse movements.
 

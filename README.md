@@ -1,7 +1,8 @@
 # Mouse Data Visualizer
 
 ![screenshot](https://i.imgur.com/cEnMa0o.png)
-A visual playground for the WindMouse JavaScript library. Edit settings in real time and fine tune your mouse movements.
+A visual playground for the WindMouse JavaScript library. Edit settings in real time and fine tune your mouse movements, powered by React.
+
 ## Getting Started
 
 ```

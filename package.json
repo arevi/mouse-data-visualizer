@@ -36,7 +36,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.8.3",
-    "windmouse": "^1.0.4",
+    "windmouse": "^1.0.5",
     "yup": "^0.29.3"
   },
   "devDependencies": {
